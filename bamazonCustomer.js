@@ -68,16 +68,44 @@ function orderingPrompt(){
     }]).then(function(userSelection){
         //connects to db, updates table
         var id = userSelection.item;
-        var quantity = userSelection.amount;
+        var orderingStock = userSelection.amount;
     connection.query("SELECT * FROM products WHERE ?", {item_id: id}, function(err, res){
-        console.log('user Selection', userSelection);
-        console.log('Poruduct id', id);
-        console.log('quantity', quantity);
-        console.log('res', res.length);
-        //console.log('err', err);
+        var availableStock = res[0].stock_orderingStock;
+        var iPrice = res[0].price;
+        var tPrice = orderingStock * iPrice;
+        //console.log('user Selection', userSelection);
+        //console.log('Poruduct id', id);
+        //console.log('orderingStock', orderingStock);
+        //console.log('Price', res[0].price);
+        //console.log('Total Price:', orderingStock * iPrice);
+        if (err) throw err;
+        if(orderingStock > availableStock){
+            console.log(`\nSorry, I've only got ${availableStock}. Try again with a smaller orderingStock.\n`);
+            orderingPrompt();
+        }
+        else {
+            connection.query("UPDATE products SET ? WHERE ?", 
+           [{
+               stock_quantity: availableStock - orderingStock
+           },
+           {
+               item_id: id            
+            }], 
+            function (err) {
+                // if(err) throw err;
+                if (orderingStock == 1){
+                    console.log(`You purchased ${orderingStock} of ${res[0].product_name} for a total of $${tPrice}.`)
+                }
+                else{
+                    console.log(`You purchased ${orderingStock} ${res[0].product_name}s for a total of $${tPrice}.`)
+                }
+            }
+            )
+        }
+        
         
     })
     }); //ends .then function
 
-    connection.end();
+    //connection.end();
 } //closes orderingPrompt();
