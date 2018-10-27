@@ -69,15 +69,17 @@ function orderingPrompt() {
         var id = userSelection.item;
         var orderingStock = userSelection.amount;
         connection.query("SELECT * FROM products WHERE ?", { item_id: id }, function (err, res) {
-            var availableStock = res[0].stock_orderingStock;
+            var availableStock = res[0].stock_quantity;
             var iPrice = res[0].price;
             var tPrice = orderingStock * iPrice;
-            //console.log('user Selection', userSelection);
-            //console.log('Poruduct id', id);
-            //console.log('orderingStock', orderingStock);
-            //console.log('Price', res[0].price);
-            //console.log('Total Price:', orderingStock * iPrice);
-            if (err) throw err;
+            console.log('user Selection', userSelection);
+            console.log('Product id', id);
+            console.log('orderingStock', orderingStock);
+            console.log('Price', res[0].price);
+            console.log('Total Price:', orderingStock * iPrice);
+            console.log('res', res)
+            
+            //if (err) throw err;
             if (orderingStock > availableStock) {
                 console.log(`\nSorry, I've only got ${availableStock} in stock. Try again with a smaller order.\n`);
                 orderingPrompt();
@@ -86,13 +88,12 @@ function orderingPrompt() {
                 connection.query("UPDATE products SET ? WHERE ?",
                     [{
                         stock_quantity: availableStock - orderingStock
-
                     },
                     {
                         item_id: id
                     }],
                     function (err) {
-                        // if(err) throw err;
+                        if(err) throw err;
                         if (orderingStock === 1) {
                             console.log(`\nYou purchased ${orderingStock} ${res[0].product_name} for a total of $${tPrice}.\n`)
                         }
