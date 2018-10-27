@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
     user: 'root',
     port: '3306',
     database: 'bamazon',
-    password: 'Faster45'
+    password: '*****'
 });
 //check to see if connection is successful
 connection.connect(function (err) {
