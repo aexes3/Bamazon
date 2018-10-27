@@ -24,7 +24,6 @@ function ourProducts() {
         if (err) throw err;
         var table = new Table({
             head: ['Id:', 'Product:', 'Price:', 'Quantity:']
-            
         });
 
         for (let i = 0; i < res.length; i++) {
@@ -87,6 +86,7 @@ function orderingPrompt() {
                 connection.query("UPDATE products SET ? WHERE ?",
                     [{
                         stock_quantity: availableStock - orderingStock
+
                     },
                     {
                         item_id: id
