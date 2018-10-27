@@ -10,5 +10,5 @@ Bamazon is an Amazon-like store that uses MySQL as the database and displays thr
   3.Once you complete the purchse, your total price will be shown for that item. You will immediately be asked if you would like to purchase another item, or exit the terminal.
 ---------------------------
 ## Supervisor View
----------------------------
+
 ## Manager View
